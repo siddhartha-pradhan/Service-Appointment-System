@@ -18,6 +18,8 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         public int ServiceId { get; set; }
 
+        public bool IsApproved { get; set; }    
+
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
     }

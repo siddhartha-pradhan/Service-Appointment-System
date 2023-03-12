@@ -1,0 +1,77 @@
+﻿@model ServiceAppointmentSystem.Models.Entities.Service
+
+@{
+    ViewData["Title"] = "Service";
+    var title = "Create a new Service";
+}
+
+<h1 class="mb-4">Service Index</h1>
+
+<form method="post">
+    <div class="row mb-3">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        @if (@Model.Id != 0)
+        {
+            title = "Edit an existing service";
+        }
+        <div class="col-6">
+            <h2 class="text-primary">@title</h2>
+        </div>
+        <div class="col-8 pt-4">
+            <div class="form-group row">
+                <div class="col-4">
+                    <label asp-for="Name"></label>
+                </div>
+                <div class="col-8 mb-4">
+                    <input asp-for="Name" class="form-control" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="BasePrice"></label>
+                </div>
+                <div class="col-8 mb-4">
+                    <input asp-for="BasePrice" class="form-control" />
+                    <span asp-validation-for="BasePrice" class="text-danger"></span>
+                </div>
+                <div class="col-4">
+                    <label asp-for="Description"></label>
+                </div>
+                <div class="col-8 mb-4">
+                    <textarea asp-for="Description" class="form-control"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group row">
+                <div class="col-8 offset-4">
+                    @if (Model.Id != 0)
+                    {
+                        <partial name="_UpdateAndBackToList" model="Model.Id" />
+                    }
+                    else
+                    {
+                        <partial name="_CreateAndBackToList" />
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+        tinymce.init({
+            forced_root_block : false,
+            selector: 'textarea',
+            plugins: 'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode editimage tinycomments tableofcontents footnotes mergetags autocorrect typography inlinecss',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            tinycomments_mode: 'embedded',
+            tinycomments_author: 'Author name',
+            mergetags_list: [
+            { value: 'First.Name', title: 'First Name' },
+            { value: 'Email', title: 'Email' },
+            ]
+        });
+    </script>
+}

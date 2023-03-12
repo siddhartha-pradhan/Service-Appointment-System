@@ -1,4 +1,6 @@
-﻿namespace ServiceAppointmentSystem.Models.Entities
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace ServiceAppointmentSystem.Models.Entities
 {
     public class Service
     {
@@ -8,6 +10,7 @@
 
         public string Description { get; set; }
 
+        [Display(Name = "Base Price")]
         public double BasePrice { get; set; }
     }
 }

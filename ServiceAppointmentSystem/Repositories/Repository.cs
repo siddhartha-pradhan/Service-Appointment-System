@@ -22,7 +22,7 @@ namespace ServiceAppointmentSystem.Repositories
             _dbSet.Add(entity);
         }
 
-        public List<T> GetAll(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, string includeProperties)
+        public List<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
 
@@ -47,7 +47,7 @@ namespace ServiceAppointmentSystem.Repositories
             return query.ToList();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter = null, string includeProperties = null)
         {
             IQueryable<T> query = _dbSet;
 

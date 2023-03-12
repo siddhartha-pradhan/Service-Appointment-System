@@ -12,8 +12,8 @@ using ServiceAppointmentSystem.Data;
 namespace ServiceAppointmentSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20230312062215_DatabaseModification")]
-    partial class DatabaseModification
+    [Migration("20230312074643_LatestDbSetup")]
+    partial class LatestDbSetup
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

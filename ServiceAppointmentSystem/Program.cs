@@ -10,11 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 var services = builder.Services;
 var configurations = builder.Configuration;
 
-var connectionString = configurations.GetConnectionString("ServiceAppointmentSystemContextConnection");
+var connectionString = configurations.GetConnectionString("DefaultConnection");
 
 services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true).AddEntityFrameworkStores<ApplicationDbContext>().AddDefaultTokenProviders();
+services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddDefaultTokenProviders();
 
 services.AddTransient<IEmailSender, EmailSender>();
 
