@@ -12,6 +12,14 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
 
+    public DbSet<Service> Services { get; set; }    
+
+    public DbSet<Order> Orders { get; set; }
+
+    public DbSet<OrderDetail> OrderDetails { get; set; }    
+
+    public DbSet<ShoppingCart> ShoppingCart { get; set;  }    
+
     protected override void OnModelCreating(ModelBuilder builder)
     {
         builder.Entity<AppUser>(b =>

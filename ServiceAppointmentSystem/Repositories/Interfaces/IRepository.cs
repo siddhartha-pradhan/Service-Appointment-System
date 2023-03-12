@@ -6,7 +6,7 @@ namespace ServiceAppointmentSystem.Repositories.Interfaces
     {
         T GetFirstOrDefault(Expression<Func<T, bool>> filter, string includeProperties = null);
 
-        T Get(int ID);
+        T Get(int Id);
 
         List<T> GetAll(Expression<Func<T, bool>> filter, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy, string includeProperties);
 

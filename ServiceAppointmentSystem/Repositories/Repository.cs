@@ -64,9 +64,9 @@ namespace ServiceAppointmentSystem.Repositories
             return query.FirstOrDefault();
         }
 
-        public T Get(int ID)
+        public T Get(int Id)
         {
-            return _dbSet.Find(ID);
+            return _dbSet.Find(Id);
         }
 
         public void Remove(T entity)
