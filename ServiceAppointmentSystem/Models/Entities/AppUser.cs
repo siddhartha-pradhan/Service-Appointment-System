@@ -11,12 +11,18 @@ namespace ServiceAppointmentSystem.Models.Entities
         [Required]
         public byte[] ProfileImage { get; set; }
 
-        public string? CertificationURL { get; set; }    
-
         [Display(Name = "City")]
         public string CityAddress { get; set; }
 
         [Display(Name = "Region")]
         public string RegionName { get; set; }
+
+        public string? Professionalism { get; set; }
+
+        [Display(Name = "Certification")]
+        public string? CertificationURL { get; set; }
+
+        [Display(Name = "Resume")]
+        public string? ResumeURL { get; set; }
     }
 }
