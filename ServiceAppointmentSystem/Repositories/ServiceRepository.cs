@@ -18,6 +18,11 @@ namespace ServiceAppointmentSystem.Repositories
             _dbContext.Services.Remove(service);
         }
 
+        public string Role(int Id)
+        {
+            return _dbContext.Services.FirstOrDefault(x => x.Id == Id).Role;
+        }
+
         public void Update(Service service)
         {
             _dbContext.Services.Update(service);    

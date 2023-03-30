@@ -9,13 +9,13 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using ServiceAppointmentSystem.Models.Constants;
 using ServiceAppointmentSystem.Models.Entities;
-using static NuGet.Packaging.PackagingConstants;
-using System.Data;
-using System.Numerics;
+using ServiceAppointmentSystem.Repositories.Interfaces;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace ServiceAppointmentSystem.Areas.Identity.Pages.Account;
 
-public class RegistrationModel : PageModel
+public class RegistrationsModel : PageModel
 {
     private readonly SignInManager<IdentityUser> _signInManager;
     private readonly UserManager<IdentityUser> _userManager;
@@ -25,15 +25,17 @@ public class RegistrationModel : PageModel
     private readonly ILogger<RegisterModel> _logger;
     private readonly IEmailSender _emailSender;
     private readonly IWebHostEnvironment _webHostEnvironment;
+    private readonly IUnitOfWork _unitOfWork;
 
-    public RegistrationModel(
+    public RegistrationsModel(
         UserManager<IdentityUser> userManager,
         IUserStore<IdentityUser> userStore,
         SignInManager<IdentityUser> signInManager,
         RoleManager<IdentityRole> roleManager,
         ILogger<RegisterModel> logger,
         IEmailSender emailSender,
-        IWebHostEnvironment webHostEnvironment)
+        IWebHostEnvironment webHostEnvironment,
+        IUnitOfWork unitOfWork)
     {
         _userManager = userManager;
         _userStore = userStore;
@@ -43,6 +45,7 @@ public class RegistrationModel : PageModel
         _logger = logger;
         _emailSender = emailSender;
         _webHostEnvironment = webHostEnvironment;
+        _unitOfWork = unitOfWork;
     }
 
     [BindProperty]
@@ -55,8 +58,8 @@ public class RegistrationModel : PageModel
     public class InputModel
     {
         [Required]
-        [MaxLength(255, ErrorMessage = "Names can have a length of only 255 characters.")]
         [Display(Name = "Full Name")]
+        [MaxLength(255, ErrorMessage = "Names can have a length of only 255 characters.")]
         public string FullName { get; set; }
 
         [Required]
@@ -70,9 +73,6 @@ public class RegistrationModel : PageModel
         [Display(Name = "Region Name")]
         public string RegionName { get; set; }
 
-        [Display(Name = "Professional Skillset")]
-        public string Professionalism { get; set; }
-
         [Required]
         [Display(Name = "Profile Image")]
         public byte[]? ProfileImage { get; set; }
@@ -82,15 +82,16 @@ public class RegistrationModel : PageModel
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Enter a valid 10 digit phone number.")]
         public string PhoneNumber { get; set; }
 
-        [Required]
-        [Display(Name = "Resume PDF")]
-        public string? ResumeURL { get; set; }
-
-        [Required]
-        [Display(Name = "Certification PDF")]
-        public string? CertificationURL { get; set; }
-
         public string Role { get; set; } = "Employee";
+
+        public string Certification { get; set; }
+
+        public string Resume { get; set; }
+
+        public int Service { get; set; }
+
+        [ValidateNever]
+        public IEnumerable<SelectListItem> Services { get; set; }
     }
 
 
@@ -104,49 +105,49 @@ public class RegistrationModel : PageModel
         {
             _roleManager.CreateAsync(new IdentityRole(Constants.Employee)).GetAwaiter().GetResult();
         }
-        if (!_roleManager.RoleExistsAsync(Constants.Individual).GetAwaiter().GetResult())
+        if (!_roleManager.RoleExistsAsync(Constants.User).GetAwaiter().GetResult())
         {
-            _roleManager.CreateAsync(new IdentityRole(Constants.Individual)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(Constants.User)).GetAwaiter().GetResult();
         }
 
         ReturnUrl = returnUrl;
 
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
-    }
 
-    public async Task<IActionResult> OnPostAsync(IFormFile resume, IFormFile certification, string? returnUrl = null)
+		Input = new InputModel()
+		{
+			Services = _unitOfWork.Service.GetAll().Select(i => new SelectListItem
+			{
+				Text = i.Role,
+				Value = i.Id.ToString()
+			}),
+		};
+
+	}
+
+	public async Task<IActionResult> OnPostAsync(IFormFile resume, IFormFile certification, string? returnUrl = null)
     {
         returnUrl ??= Url.Content("~/");
+
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
         if (!ModelState.IsValid)
         {
             var user = CreateUser();
+            var professional = new Professional();
+            var password = "Service@123";
+            var service = _unitOfWork.Service.Role(Input.Service);
 
             user.FullName = Input.FullName;
             user.PhoneNumber = Input.PhoneNumber;
             user.CityAddress = Input.CityAddress;
             user.RegionName = Input.RegionName;
-            user.Professionalism = Input.Professionalism;
-
-            var wwwRootPath = _webHostEnvironment.WebRootPath;
-
-            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-            var stringChars = new char[8];
-            var random = new Random();
-
-            for (int i = 0; i < stringChars.Length; i++)
-            {
-                stringChars[i] = chars[random.Next(chars.Length)];
-            }
-
-            var finalString = new String(stringChars);
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
 
             await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
             
-            var result = await _userManager.CreateAsync(user, "@ff!N1ty");
+            var result = await _userManager.CreateAsync(user, password);
 
             if (result.Succeeded)
             {
@@ -154,11 +155,22 @@ public class RegistrationModel : PageModel
 
                 var userId = await _userManager.GetUserIdAsync(user);
 
+                var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+                var stringChars = new char[8];
+                var random = new Random();
+
+                for (int i = 0; i < stringChars.Length; i++)
+                {
+                    stringChars[i] = chars[random.Next(chars.Length)];
+                }
+
+                var finalString = new string(stringChars);
+
                 if (Request.Form.Files.Count > 0)
                 {
                     var file = Request.Form.Files.FirstOrDefault();
 
-                    var fileName = $"[{user.Professionalism} - {finalString}] {user.FullName} - Image";
+                    var fileName = $"[Employee - {finalString}] {user.FullName} - Image";
 
                     var uploads = Path.Combine(_webHostEnvironment.WebRootPath, @$"images\users\");
 
@@ -178,10 +190,12 @@ public class RegistrationModel : PageModel
                     await _userManager.UpdateAsync(user);
                 }
 
-                if (resume != null)
+                if(resume != null)
                 {
-                    var fileName = $"[{user.Professionalism} - {finalString}] {user.FullName} - Resume";
-                    var uploads = Path.Combine(wwwRootPath, @$"images\resume\");
+                    var fileName = $"[{service} - {finalString}] {user.FullName} - Resume";
+
+                    var uploads = Path.Combine(_webHostEnvironment.WebRootPath, @$"images\resumes\");
+                    
                     var extension = Path.GetExtension(resume.FileName);
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
@@ -189,13 +203,15 @@ public class RegistrationModel : PageModel
                         resume.CopyTo(fileStreams);
                     }
 
-                    user.ResumeURL = @$"\images\resume\" + fileName + extension;
+                    professional.Resume = @$"\images\resumes\" + fileName + extension;
                 }
 
                 if (certification != null)
                 {
-                    var fileName = $"[{user.Professionalism} - {finalString}] {user.FullName} - Certificates";
-                    var uploads = Path.Combine(wwwRootPath, @$"images\certification\");
+                    var fileName = $"[{service} - {finalString}] {user.FullName} - Certification";
+
+                    var uploads = Path.Combine(_webHostEnvironment.WebRootPath, @$"images\certifications\");
+
                     var extension = Path.GetExtension(certification.FileName);
 
                     using (var fileStreams = new FileStream(Path.Combine(uploads, fileName + extension), FileMode.Create))
@@ -203,36 +219,24 @@ public class RegistrationModel : PageModel
                         certification.CopyTo(fileStreams);
                     }
 
-                    user.CertificationURL = @$"\images\certifications\" + fileName + extension;
+                    professional.Certification = @$"\images\certifications\" + fileName + extension;
                 }
+
+                professional.UserId = user.Id;
+                professional.ServiceId = Input.Service;
+
+                _unitOfWork.Professional.Add(professional);
+
+                await _userManager.AddToRoleAsync(user, Input.Role);
+
+                await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
+
+                await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
 
                 TempData["Success"] = "Registration requested successfully";
 
-                return RedirectToPage("./Register");
+                return RedirectToPage("./Registrations");
 
-                //var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-
-                //code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
-
-                //var callbackUrl = Url.Page(
-                //    "/Account/ConfirmEmail",
-                //    pageHandler: null,
-                //    values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
-                //    protocol: Request.Scheme);
-
-                //await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                //    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
-
-                //if (_userManager.Options.SignIn.RequireConfirmedAccount)
-                //{
-                //    return RedirectToPage("RegisterConfirmation", new { email = Input.Email, returnUrl = returnUrl });
-                //}
-                //else
-                //{
-                //    await _signInManager.SignInAsync(user, isPersistent: false);
-
-                //    return LocalRedirect(returnUrl);
-                //}
             }
             foreach (var error in result.Errors)
             {

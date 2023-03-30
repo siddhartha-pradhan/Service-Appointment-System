@@ -9,8 +9,6 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using ServiceAppointmentSystem.Models.Constants;
 using ServiceAppointmentSystem.Models.Entities;
-using static NuGet.Packaging.PackagingConstants;
-using System.Data;
 
 namespace ServiceAppointmentSystem.Areas.Identity.Pages.Account;
 
@@ -103,9 +101,9 @@ public class RegisterModel : PageModel
         {
             _roleManager.CreateAsync(new IdentityRole(Constants.Employee)).GetAwaiter().GetResult();
         }
-        if (!_roleManager.RoleExistsAsync(Constants.Individual).GetAwaiter().GetResult())
+        if (!_roleManager.RoleExistsAsync(Constants.User).GetAwaiter().GetResult())
         {
-            _roleManager.CreateAsync(new IdentityRole(Constants.Individual)).GetAwaiter().GetResult();
+            _roleManager.CreateAsync(new IdentityRole(Constants.User)).GetAwaiter().GetResult();
         }
 
         ReturnUrl = returnUrl;
@@ -154,7 +152,7 @@ public class RegisterModel : PageModel
                 {
                     var file = Request.Form.Files.FirstOrDefault();
 
-                    var fileName = $"[Individual - {finalString}] {user.FullName} - Image";
+                    var fileName = $"[User - {finalString}] {user.FullName} - Image";
 
                     var uploads = Path.Combine(_webHostEnvironment.WebRootPath, @$"images\users\");
 

@@ -10,7 +10,8 @@ function loadDataTable() {
             "url": "/Admin/Service/GetAll"
         },
         "columns": [
-            { "data": "name", "width": "40%" },
+            { "data": "name", "width": "30%" },
+            { "data": "role", "width": "30%" },
             { "data": "basePrice", "width": "20%" },
             {
                 "data": "id",
@@ -25,7 +26,7 @@ function loadDataTable() {
                             </a>
                         </div>
                     `;
-                }, "width": "30%"
+                }, "width": "20%"
             }
         ]
     });

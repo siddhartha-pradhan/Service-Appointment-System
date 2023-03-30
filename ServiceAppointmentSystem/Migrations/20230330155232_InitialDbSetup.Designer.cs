@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ServiceAppointmentSystem.Data;
 
@@ -11,9 +12,10 @@ using ServiceAppointmentSystem.Data;
 namespace ServiceAppointmentSystem.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230330155232_InitialDbSetup")]
+    partial class InitialDbSetup
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,42 +325,6 @@ namespace ServiceAppointmentSystem.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Professional", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Certification")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("IsApproved")
-                        .HasColumnType("bit");
-
-                    b.Property<double>("Rate")
-                        .HasColumnType("float");
-
-                    b.Property<string>("Resume")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Professionals");
-                });
-
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Service", b =>
                 {
                     b.Property<int>("Id")
@@ -415,6 +381,9 @@ namespace ServiceAppointmentSystem.Migrations
                 {
                     b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
 
+                    b.Property<string>("CertificationURL")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("CityAddress")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -423,12 +392,18 @@ namespace ServiceAppointmentSystem.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Professionalism")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<byte[]>("ProfileImage")
                         .IsRequired()
                         .HasColumnType("varbinary(max)");
 
                     b.Property<string>("RegionName")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ResumeURL")
                         .HasColumnType("nvarchar(max)");
 
                     b.HasDiscriminator().HasValue("AppUser");
@@ -513,17 +488,6 @@ namespace ServiceAppointmentSystem.Migrations
                     b.Navigation("Order");
 
                     b.Navigation("Service");
-                });
-
-            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Professional", b =>
-                {
-                    b.HasOne("ServiceAppointmentSystem.Models.Entities.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.ShoppingCart", b =>

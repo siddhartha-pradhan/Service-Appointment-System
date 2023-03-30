@@ -23,4 +23,11 @@
     <Folder Include="wwwroot\images\users\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="Areas\Identity\Pages\Account\Registrations.cshtml">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

@@ -10,6 +10,8 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         public string Description { get; set; }
 
+        public string Role { get; set; }
+
         [Display(Name = "Base Price")]
         public double BasePrice { get; set; }
     }

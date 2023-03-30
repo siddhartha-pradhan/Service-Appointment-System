@@ -1,13 +1,14 @@
 ﻿@page
-@model RegistrationModel
+@model RegistrationsModel
 @{
-	ViewData["Title"] = "Staff Registration";
+	ViewData["Title"] = "User Registration";
 }
 
 <h1 class="mt-3">@ViewData["Title"]</h1>
 
-<form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" enctype = "multipart/form-data" method="post">
-	<div class="row">
+<partial name="_Notification" />
+
+<div class="row">
 	<div class="col-md-7">
 		<form id="registerForm" class="row" asp-route-returnUrl="@Model.ReturnUrl" method="post" enctype = "multipart/form-data" >
 			<hr />
@@ -38,11 +39,11 @@
 				<span asp-validation-for="Input.CityAddress" class="text-danger"></span>
 			</div>
 			<div class="form-floating col-12 my-2">
-				<select asp-for="Input.Professionalism" class="form-select">
-					<option disabled selected>Choose a profession</option>
-					<option value="Electrician">Electrician</option>
-					<option value="Plumber">Plumber</option>
+				<div class="form-group">
+					<select asp-for="Input.Service" asp-items="@Model.Input.Services" class="form-select">
+					<option disabled selected>Select a Service</option>
 				</select>
+				</div>
 			</div>
 			<div class="form-floating col-6 my-2">
 				<div class="form-group">
@@ -52,23 +53,22 @@
 			</div>
 			<div class="form-floating col-6 my-2">
 				<div class="form-group">
-					<label asp-for="Input.ResumeURL" class="mb-2"></label>
-					<input asp-for="Input.ResumeURL" class="form-control" type="file" accept=".png,.jpg,.jpeg,.gif,.tif">
+					<label asp-for="Input.Resume" class="mb-2"></label>
+					<input asp-for="Input.Resume" class="form-control" type="file" name="resume" accept="application/pdf">
 				</div>
 			</div>
 			<div class="form-floating col-6 my-2">
 				<div class="form-group">
-					<label asp-for="Input.CertificationURL" class="mb-2"></label>
-					<input asp-for="Input.CertificationURL" class="form-control" type="file" accept=".png,.jpg,.jpeg,.gif,.tif">
+					<label asp-for="Input.Certification" class="mb-2"></label>
+					<input asp-for="Input.Certification" class="form-control" type="file" name="certification" accept="application/pdf">
 				</div>
 			</div>
 			<div class="form-floating col-12 my-2">
-				<button id="registerSubmit" type="submit" class="w-100 btn btn-primary">Register</button>
+				<button id="registerSubmit" type="submit" class="w-100 btn btn-primary">Request a Registration</button>
 			</div>
 		</form>
 	</div>
 </div>
-</form>
 
 @section Scripts {
 	<partial name="_ValidationScriptsPartial" />

@@ -14,7 +14,9 @@ public class ApplicationDbContext : IdentityDbContext
 
     public DbSet<AppUser> AppUsers { get; set; }
 
-    public DbSet<Service> Services { get; set; }    
+	public DbSet<Professional> Professionals { get; set; }
+
+	public DbSet<Service> Services { get; set; }    
 
     public DbSet<Order> Orders { get; set; }
 

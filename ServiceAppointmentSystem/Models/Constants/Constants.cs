@@ -2,7 +2,7 @@
 {
     public class Constants
     {
-        public const string Individual = "Individual";
+        public const string User = "User";
         public const string Admin = "Admin";
         public const string Employee = "Employee";
 
