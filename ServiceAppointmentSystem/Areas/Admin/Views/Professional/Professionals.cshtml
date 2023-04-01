@@ -1,0 +1,49 @@
+﻿@model List<ServiceAppointmentSystem.Models.ViewModels.ApprovalViewModel>
+
+@{
+    ViewData["Title"] = "Professionals Approval";
+}
+
+<h1 class="mt-4">Approval for Professional Registrations</h1>
+
+<partial name="_Notification" />
+
+@foreach (var item in Model)
+{
+    <form method="post">
+        <input asp-for="@item.UserId" class="form-control" type="hidden" />
+        <input asp-for="@item.ProfessionalId" class="form-control" type="hidden" />
+        <div class="card">
+        <div class="card-body">
+            <div class="row">
+                <div class="col">
+                    <img id="profilePicture" style="width:485px;height:400px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(@item.ProfileImage))">
+                </div>
+                <div class="col">
+                    <div class="row">
+                        Name: @item.FullName
+                    </div>
+                    <div class="row">
+                        Email: @item.EmailAddress
+                    </div>
+                    <div class="row">
+                        PhoneNumber: @item.PhoneNumber
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <a class="btn btn-outline-primary mb-2" href="@item.Resume" target="_blank">Resume</a>
+                    </div>
+                    <div class="row">
+                        <a class="btn btn-outline-primary mb-2" href="@item.Certification" target="_blank">Certification</a>
+                    </div>
+                    <div class="row">
+                        <button class="btn btn-dark mb-2" asp-route-id="@item.UserId" asp-route-staffId="@item.ProfessionalId">Approve</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </form>
+
+}

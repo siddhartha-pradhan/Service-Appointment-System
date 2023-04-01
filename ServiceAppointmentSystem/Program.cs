@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using ServiceAppointmentSystem.Data;
-using ServiceAppointmentSystem.Models.Entities;
 using ServiceAppointmentSystem.Repositories;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using ServiceAppointmentSystem.Repositories.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +20,8 @@ services.AddIdentity<IdentityUser, IdentityRole>(options => options.SignIn.Requi
 services.AddTransient<IEmailSender, EmailSender>();
 
 services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+services.AddScoped<IDbInitializer, DbInitializer>();
 
 services.AddControllersWithViews();
 
@@ -57,4 +58,15 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{Area=User}/{controller=Home}/{action=Index}/{id?}");
 
+SeedDatabase();
+
 app.Run();
+
+void SeedDatabase()
+{
+    using (var scope = app.Services.CreateScope())
+    {
+        var dbInitializer = scope.ServiceProvider.GetRequiredService<IDbInitializer>();
+        dbInitializer.Initialize();
+    }
+}

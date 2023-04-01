@@ -97,19 +97,6 @@ public class RegistrationsModel : PageModel
 
     public async Task OnGetAsync(string returnUrl = null)
     {
-        if (!_roleManager.RoleExistsAsync(Constants.Admin).GetAwaiter().GetResult())
-        {
-            _roleManager.CreateAsync(new IdentityRole(Constants.Admin)).GetAwaiter().GetResult();
-        }
-        if (!_roleManager.RoleExistsAsync(Constants.Employee).GetAwaiter().GetResult())
-        {
-            _roleManager.CreateAsync(new IdentityRole(Constants.Employee)).GetAwaiter().GetResult();
-        }
-        if (!_roleManager.RoleExistsAsync(Constants.User).GetAwaiter().GetResult())
-        {
-            _roleManager.CreateAsync(new IdentityRole(Constants.User)).GetAwaiter().GetResult();
-        }
-
         ReturnUrl = returnUrl;
 
         ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
