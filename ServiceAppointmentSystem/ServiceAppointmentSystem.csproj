@@ -15,10 +15,12 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.13" />
+    <PackageReference Include="Stripe.net" Version="41.12.0" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="wwwroot\images\certifications\" />
+    <Folder Include="wwwroot\images\items\" />
     <Folder Include="wwwroot\images\resumes\" />
     <Folder Include="wwwroot\images\users\" />
   </ItemGroup>

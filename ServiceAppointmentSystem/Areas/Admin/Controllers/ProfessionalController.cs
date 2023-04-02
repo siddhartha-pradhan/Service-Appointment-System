@@ -49,31 +49,25 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
             return View(result);
         }
 
-        [HttpGet]
-        public IActionResult GetAll()
-        {
-            var professionals = _unitOfWork.Professional.GetAll().Where(x => x.IsApproved);
-
-            return Json(new { data = professionals });
-        }
-
         [HttpPost, ActionName("Professionals")]
         public IActionResult Approve(string id, int professionalId)
         {
             var user = _unitOfWork.AppUser.GetFirstOrDefault(x => x.Id == id);  
-            var professional = _unitOfWork.Professional.GetFirstOrDefault(x => x.Id == professionalId);
+            var professional = _unitOfWork.Professional.GetFirstOrDefault(x => x.UserId == id);
             var service = _unitOfWork.Service.GetFirstOrDefault(x => x.Id == professional.ServiceId);
 
             if(ModelState.IsValid)
             {
                 _unitOfWork.Professional.Approve(professional);
 
+                _unitOfWork.Save();
+
 				TempData["Success"] = "Professional Approved Successfully";
 
 				_emailSender.SendEmailAsync(user.Email, "Successful Registration",
 						$"Hi there, You have been registered to our system as a {service.Role}. The password is Service@123");
 
-				return RedirectToAction("Index");
+				return RedirectToAction("Professionals");
 			}
 
 			return View(user);

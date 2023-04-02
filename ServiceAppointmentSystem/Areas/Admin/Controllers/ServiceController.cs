@@ -88,11 +88,11 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
         [HttpPost, ActionName("Delete")]
         public IActionResult DeletePost(int id)
         {
-            var category = _unitOfWork.Service.GetFirstOrDefault(u => u.Id == id);
+            var service = _unitOfWork.Service.GetFirstOrDefault(u => u.Id == id);
 
-            if (category != null)
+            if (service != null)
             {
-                _unitOfWork.Service.Delete(category);
+                _unitOfWork.Service.Delete(service);
                 _unitOfWork.Save();
 
                 TempData["Delete"] = "Service deleted successfully";

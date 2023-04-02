@@ -1,0 +1,51 @@
+﻿@model IEnumerable<ServiceAppointmentSystem.Models.Entities.Item>
+
+<partial name="_Notification" />
+
+<h1 class="mb-4">Item Index</h1>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <h2 class="text-primary">List of Items</h2>
+    </div>
+    <div class="col-6 text-end">
+        <a class="btn btn-primary" asp-action="Upsert"><i class="fa-solid fa-plus"></i> &nbsp; Create A New Item</a>
+    </div>
+</div>
+
+<div class="p-2 border rounded">
+    <table id="tableData" class="table table-striped table-bordered" style="width:100%">
+        <thead class="mt-2">
+            <tr class="table-info">
+                <th class="text-center">Item Name</th>
+                <th class="text-center">List Price</th>
+                <th class="text-center">Price for 20 Items</th>
+                <th class="text-center">Price for 50 Items</th>
+                <th class="text-center">Service Item</th>
+                <th class="text-center">Options</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var item in Model)
+            {
+                <tr>
+                    <td>@item.Name</td>
+                    <td>@item.ListPrice</td>
+                    <td>@item.Price20</td>
+                    <td>@item.Price50</td>
+                    <td>@item.Service.Name</td>
+                    <td>
+                        <a href="@Url.Action("Upsert", "Item", new { id=item.Id })" class="btn btn-primary btn-sm"><i class="fa fa-cogs"></i></a>
+                        <a href="@Url.Action("Delete", "Item", new { id=item.Id })" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></a> 
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+    <script>
+        $("#tableData").DataTable();
+    </script>
+}

@@ -2,9 +2,9 @@
 
 namespace ServiceAppointmentSystem.Repositories.Interfaces
 {
-    public interface IOrderRepository : IRepository<Order>
+    public interface IOrderRepository : IRepository<OrderHeader>
     {
-        void Update(Order order);
+        void Update(OrderHeader order);
 
         void UpdateStatus(int Id, string orderStatus, string? paymentStatus = null);
 

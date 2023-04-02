@@ -226,6 +226,47 @@ namespace ServiceAppointmentSystem.Migrations
                     b.ToTable("Tokens", (string)null);
                 });
 
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Item", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ImageURL")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("ListPrice")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price20")
+                        .HasColumnType("float");
+
+                    b.Property<double>("Price50")
+                        .HasColumnType("float");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ServiceId");
+
+                    b.ToTable("Items");
+                });
+
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -305,20 +346,20 @@ namespace ServiceAppointmentSystem.Migrations
                     b.Property<int>("Count")
                         .HasColumnType("int");
 
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
                     b.Property<double>("Price")
                         .HasColumnType("float");
 
-                    b.Property<int>("ServiceId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("OrderId");
+                    b.HasIndex("ItemId");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("OrderId");
 
                     b.ToTable("OrderDetails");
                 });
@@ -395,7 +436,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int>("ServiceId")
+                    b.Property<int>("ItemId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
@@ -404,7 +445,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ServiceId");
+                    b.HasIndex("ItemId");
 
                     b.HasIndex("UserId");
 
@@ -485,6 +526,17 @@ namespace ServiceAppointmentSystem.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Item", b =>
+                {
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Order", b =>
                 {
                     b.HasOne("ServiceAppointmentSystem.Models.Entities.AppUser", "AppUser")
@@ -498,21 +550,21 @@ namespace ServiceAppointmentSystem.Migrations
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderDetail", b =>
                 {
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Item", "Item")
+                        .WithMany()
+                        .HasForeignKey("ItemId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ServiceAppointmentSystem.Models.Entities.Order", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Service", "Service")
-                        .WithMany()
-                        .HasForeignKey("ServiceId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Item");
 
                     b.Navigation("Order");
-
-                    b.Navigation("Service");
                 });
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Professional", b =>
@@ -528,9 +580,9 @@ namespace ServiceAppointmentSystem.Migrations
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.ShoppingCart", b =>
                 {
-                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Service", "Service")
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Item", "Item")
                         .WithMany()
-                        .HasForeignKey("ServiceId")
+                        .HasForeignKey("ItemId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -542,7 +594,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.Navigation("AppUser");
 
-                    b.Navigation("Service");
+                    b.Navigation("Item");
                 });
 #pragma warning restore 612, 618
         }

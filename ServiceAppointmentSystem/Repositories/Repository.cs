@@ -44,6 +44,8 @@ namespace ServiceAppointmentSystem.Repositories
                 }
             }
 
+            var x = query.ToList();
+
             return query.ToList();
         }
 

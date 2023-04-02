@@ -1,33 +1,87 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceAppointmentSystem.Models;
+using ServiceAppointmentSystem.Models.Entities;
+using ServiceAppointmentSystem.Repositories.Interfaces;
 using System.Diagnostics;
+using System.Security.Claims;
 
 namespace ServiceAppointmentSystem.Areas.User.Controllers
 {
     [Area("User")]
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+		private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
-        {
-            _logger = logger;
-        }
+		private readonly IUnitOfWork _unitOfWork;
 
-        public IActionResult Index()
-        {
-            return View();
-        }
+		public HomeController(ILogger<HomeController> logger, IUnitOfWork unitOfWork)
+		{
+			_logger = logger;
+			_unitOfWork = unitOfWork;
+		}
 
-        public IActionResult Privacy()
-        {
-            return View();
-        }
+		#region Razor Pages
+		public IActionResult Index()
+		{
+			var items = _unitOfWork.Item.GetAll(includeProperties: "Service");
 
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-        public IActionResult Error()
-        {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
-    }
+			return View(items);
+		}
+
+		public IActionResult Privacy()
+		{
+			return View();
+		}
+
+		public IActionResult Details(int itemID)
+		{
+			ShoppingCart cart = new ShoppingCart()
+			{
+				Count = 1,
+				ItemId = itemID,
+				Item = _unitOfWork.Item.GetFirstOrDefault(x => x.Id == itemID, includeProperties: "Service")
+			};
+
+			return View(cart);
+
+		}
+
+		[ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+		public IActionResult Error()
+		{
+			return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+		}
+		#endregion
+
+		#region API Calls
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		[Authorize]
+		public IActionResult Details(ShoppingCart shoppingCart)
+		{
+			var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+			var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+			shoppingCart.UserId = claim.Value;
+
+			ShoppingCart cart = _unitOfWork.ShoppingCart.GetFirstOrDefault(u =>
+				u.UserId == claim.Value && u.ItemId == shoppingCart.ItemId);
+
+			if (cart == null)
+			{
+				_unitOfWork.ShoppingCart.Add(shoppingCart);
+			}
+			else
+			{
+				_unitOfWork.ShoppingCart.IncrementCount(cart, shoppingCart.Count);
+			}
+
+			_unitOfWork.Save();
+
+			return RedirectToAction(nameof(Index));
+		}
+		#endregion
+	}
 }

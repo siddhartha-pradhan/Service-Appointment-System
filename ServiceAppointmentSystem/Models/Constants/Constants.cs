@@ -11,9 +11,12 @@
         public const string StatusProcessing = "Processing";
         public const string StatusCompleted = "Completed";
         public const string StatusCancelled = "Cancelled";
+        public const string StatusShipped = "Shipped";
 
-        public const string PaymentPending = "Pending";
-        public const string PaymentApproved = "Approved";
+		public const string PaymentPending = "Pending";
+		public const string PaymentRefunded = "Refunded";
+		public const string PaymentCancelled = "Cancelled";
+		public const string PaymentApproved = "Approved";
         public const string PaymentDelayed = "Delayed";
         public const string PaymentRejected = "Rejected";
     }

@@ -4,6 +4,8 @@
     {
         IAppUserRepository AppUser { get; set; }
 
+        IItemRepository Item { get; set; }
+
         IOrderDetailRepository OrderDetail { get; set; }
 
         IOrderRepository Order { get; set; }
@@ -12,6 +14,8 @@
 
         IServiceRepository Service { get; set; }
 
-        void Save();
+		IShoppingCartRepository ShoppingCart { get; set; }
+
+		void Save();
     }
 }

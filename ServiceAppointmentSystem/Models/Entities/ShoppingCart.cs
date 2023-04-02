@@ -8,17 +8,20 @@ namespace ServiceAppointmentSystem.Models.Entities
         [Key]
         public int Id { get; set; }
 
-        public int ServiceId { get; set; }
+        public int ItemId { get; set; }
 
         public string UserId { get; set; }
 
-        [ForeignKey("ServiceId")]
-        public Service? Service { get; set; }
+		[Range(1, 1000, ErrorMessage = "Enter a value from 1 to 1000")]
+		public int Count { get; set; }
+
+		[ForeignKey("ItemId")]
+        public Item? Item { get; set; }
 
         [ForeignKey("UserId")]
         public AppUser? AppUser { get; set; }
 
-        [NotMapped]
-        public double TotalAmount { get; set; }
-    }
+		[NotMapped]
+		public double Price { get; set; }
+	}
 }

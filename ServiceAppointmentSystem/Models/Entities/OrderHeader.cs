@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ServiceAppointmentSystem.Models.Entities
 {
-    public class Order
+    public class OrderHeader
     {
         [Key]
         public int Id { get; set; }

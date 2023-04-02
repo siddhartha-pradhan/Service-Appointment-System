@@ -4,7 +4,7 @@ using ServiceAppointmentSystem.Repositories.Interfaces;
 
 namespace ServiceAppointmentSystem.Repositories
 {
-    public class OrderRepository : Repository<Order>, IOrderRepository
+    public class OrderRepository : Repository<OrderHeader>, IOrderRepository
     {
         private readonly ApplicationDbContext _dbContext;
 
@@ -13,7 +13,7 @@ namespace ServiceAppointmentSystem.Repositories
             _dbContext = dbContext;
         }
 
-        public void Update(Order order)
+        public void Update(OrderHeader order)
         {
             _dbContext.Orders.Update(order);
         }
