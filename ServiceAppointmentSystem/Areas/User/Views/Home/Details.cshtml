@@ -5,7 +5,7 @@
 }
 
 <form method="post">
-    <div class="card container pt-2">
+    <div class="card container mt-5 pt-2">
         <div class="card-header bg-dark text-light m-lg-0 row">
             <div class="col-12 col-md-6">
                 <input asp-for="ItemId" hidden />
@@ -22,7 +22,7 @@
                         <div class="row p-lg-2">
                             <h5 class="col pb-2">
                                 List Price: 
-                                <strike class="text-muted col">@Model.Item.ListPrice.ToString("c")</strike>
+                                <strike class="text-muted col">Rs @Model.Item.ListPrice.ToString()</strike>
                             </h5>
                         </div>
                         <div class="row text-center p-lg-2">
@@ -44,13 +44,13 @@
                                 <div>Price</div>
                             </div>
                             <div class="p-1 col-2">
-                                <div>@Model.Item.Price.ToString("c")</div>
+                                <div>Rs @Model.Item.Price.ToString()</div>
                             </div>
                             <div class="p-1 col-2">
-                                <div>@Model.Item.Price20.ToString("c")</div>
+                                <div>Rs @Model.Item.Price20.ToString()</div>
                             </div>
                             <div class="p-1 col-2">
-                                <div>@Model.Item.Price50.ToString("c")</div>
+                                <div>Rs @Model.Item.Price50.ToString()</div>
                             </div>
                         </div>
                         <div class="row pl-2 mt-1 mb-2 p-lg-2">
@@ -62,7 +62,7 @@
                         </div>
                     </div>
                     <div class="col-12 col-lg-3 offset-lg-1 text-center">
-                        <img src="@Model.Item.ImageURL" style="width: 75%" class="rounded" />
+                        <img src="@Model.Item.ImageURL" style="width: 100%" class="rounded" />
                     </div>
                 </div>
             </div>

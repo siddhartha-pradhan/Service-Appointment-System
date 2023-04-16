@@ -103,7 +103,7 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
         }
 
         [HttpPost, ActionName("Professionals")]
-        public IActionResult Approve(string id, int professionalId)
+        public IActionResult Approve(string id)
         {
             var user = _unitOfWork.AppUser.GetFirstOrDefault(x => x.Id == id);  
             var professional = _unitOfWork.Professional.GetFirstOrDefault(x => x.UserId == id);
@@ -118,7 +118,7 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 				TempData["Success"] = "Professional Approved Successfully";
 
 				_emailSender.SendEmailAsync(user.Email, "Successful Registration",
-						$"Hi there, You have been registered to our system as a {service.Role}. The password is Service@123");
+						$"Dear {user.FullName}, <br><br>  You have been registered to our system as a {service.Role}. <br> The password is Service@123.");
 
 				return RedirectToAction("Professionals");
 			}

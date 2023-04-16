@@ -22,13 +22,13 @@ function loadDataTable(status) {
             { "data": "id", "width": "10%" },
             { "data": "name", "width": "15%" },
             { "data": "phoneNumber", "width": "15%" },
-            { "data": "applicationUser.email", "width": "20%" },
+            { "data": "appUser.email", "width": "20%" },
             { "data": "orderStatus", "width": "10%" },
             {
                 "data": "orderTotal", "width": "10%",
                 "render": function (data) {
                     var number = $.fn.dataTable.render
-                        .number(',', '.', 2, '$')
+                        .number(',', '.', 2, 'Rs')
                         .display(data);
 
                     return '<span>' + number + '</span>';

@@ -85,7 +85,9 @@ public class HomeController : Controller
 
 		_unitOfWork.Save();
 
-		return RedirectToAction(nameof(Index));
+		TempData["Success"] = "Successfully Added To Cart";
+
+		return RedirectToAction(nameof(Items));
 	}
 	#endregion
 }

@@ -8,6 +8,9 @@ namespace ServiceAppointmentSystem.Repositories.Interfaces
 
         T Get(int Id);
 
+        T GetById(Guid? Id);
+
+
         List<T> GetAll(Expression<Func<T, bool>> filter = null, Func<IQueryable<T>, IOrderedQueryable<T>> orderBy = null, string includeProperties = null);
 
         void Add(T entity);

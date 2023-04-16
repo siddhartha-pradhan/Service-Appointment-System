@@ -4,7 +4,9 @@
     ViewData["Title"] = "Index";
 }
 
-<h1 class="mb-4">Appointment Index</h1>
+<h1 class="mt-4 mb-4">Appointment Index</h1>
+
+<partial name="_Notification" />
 
 <div class="row mb-3">
     <div class="col-6">
@@ -18,35 +20,51 @@
 <div class="container-fluid">
 	@foreach(var item in Model)
 	{
-		<div class="card">
-			<div class="card-body">
-				<div class="row">
-					<div class="col-auto">
-						<h3 class="row ml-3">
-							Appointment Request
-						</h3>
-						<div class="row mb-4 ml-3">
-							@Html.Raw(item.Request)
-						</div>
-					</div>
-					<div class="col-auto ml-3">
-						<h3 class="row ml-3">
-							Booked Date
-						</h3>
-						<div class="row mb-4 ml-3">
-							@item.BookedDate
-						</div>
-					</div>
-					<div class="col-auto ml-3">
-						<h3 class="row ml-3">
-							Appointed Date
-						</h3>
-						<div class="row mb-4 ml-3">
-							@item.FinalizedDate
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div class="card mt-4">
+            <div class="row m-4">
+                <div class="col-3 ms-5">
+                    <h3 class="row ms-3">
+                        Booked Date
+                    </h3>
+                    <div class="row mb-4 ms-3">
+                        @item.BookedDate
+                    </div>
+                    <h3 class="row ms-3">
+                        Finalized Date
+                    </h3>
+                    <div class="row mb-4 ms-3">
+                        @item.FinalizedDate
+                    </div>
+                </div>
+                <div class="col">
+                    <h3 class="row ms-3">
+                        Date of Appointment
+                    </h3>
+                    <div class="row mb-4 ms-3">
+                        @item.AppointedDate
+                    </div>
+                    <h3 class="row ms-3">
+                        Assigned Technician
+                    </h3>
+                    <div class="row mb-4 ms-3">
+                        @item.ProfessionalName
+                    </div>
+                </div>
+                 <div class="col">
+                    <h3 class="row ms-2">
+                        Service
+                    </h3>
+                    <div class="row mb-4 ms-2">
+                        @item.Service
+                    </div>
+                    <h3 class="row ms-2">
+                        Request
+                    </h3>
+                    <div class="row mb-4">
+                        @Html.Raw("<div class=\"ms-2\">" + @item.Request + "</div>")
+                    </div>
+                </div>
+            </div>
+        </div>
 	}
 </div>

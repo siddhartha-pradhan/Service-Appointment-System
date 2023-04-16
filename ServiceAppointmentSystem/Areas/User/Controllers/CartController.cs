@@ -160,6 +160,7 @@ public class CartController : Controller
 		var orderHeader = _unitOfWork.Order.GetFirstOrDefault(i => i.Id == ID);
 
 		var claimsIdentity = (ClaimsIdentity)User.Identity;
+
 		var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
 		var applicationUser = _unitOfWork.AppUser.GetFirstOrDefault(u => u.Id == claim.Value);
@@ -180,10 +181,12 @@ public class CartController : Controller
 			//}
 		}
 
-		_emailSender.SendEmailAsync(orderHeader.AppUser.Email, "Order Confirmation", "New Order Created");
+		_emailSender.SendEmailAsync(orderHeader.AppUser.Email, "Order Confirmation", $"Dear {applicationUser.FullName}, <br><br>A new order has been placed.");
 
 		var cartList = _unitOfWork.ShoppingCart.GetAll(u => u.UserId == orderHeader.UserId, null, null).ToList();
+
 		_unitOfWork.ShoppingCart.RemoveRange(cartList);
+		
 		_unitOfWork.Save();
 
 		return View(ID);

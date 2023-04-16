@@ -8,6 +8,12 @@ namespace ServiceAppointmentSystem.Models.ViewModels
 
         public string Request { get; set; }
 
+        public string? UserId { get; set; }  
+
+        public string? UserName { get; set; }    
+
+        public byte[]? UserProfile { get; set; } 
+
         public string ActionStatus { get; set; }
 
         [Display(Name = "Service")]
@@ -15,15 +21,16 @@ namespace ServiceAppointmentSystem.Models.ViewModels
 
         public string Service { get; set; }
 
-        public int? ProfessionalId { get; set; }
+        public Guid? ProfessionalId { get; set; }
 
         public string? ProfessionalName { get; set; }
 
         public string? Professionalism { get; set; }
 
+        [Display(Name = "Booked Date")]
         public string BookedDate { get; set; }
 
-        [Display(Name = "Appointment Date")]
+		[Display(Name = "Appointment Date")]
         public string AppointedDate { get; set; }
 
         public string? FinalizedDate { get; set; }

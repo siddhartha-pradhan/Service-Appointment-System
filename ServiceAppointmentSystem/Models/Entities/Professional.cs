@@ -6,7 +6,7 @@ namespace ServiceAppointmentSystem.Models.Entities
     public class Professional 
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         
         public string UserId { get; set; }  
 

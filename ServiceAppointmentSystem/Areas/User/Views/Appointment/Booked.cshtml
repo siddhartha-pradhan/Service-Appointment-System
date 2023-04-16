@@ -1,7 +1,56 @@
-﻿
+﻿@model List<ServiceAppointmentSystem.Models.ViewModels.AppointmentViewModel>
+
 @{
-    ViewData["Title"] = "Booked";
+    ViewData["Title"] = "Booked Appointments";
 }
 
-<h1>Booked</h1>
+<h1 class="mt-4">Booked Appointments</h1>
+
+<div class="container">
+    <div class="row">
+        @foreach(var item in Model)
+        {
+            <div class="card mt-4">
+                <div class="row m-4">
+                    <div class="col-3">
+                        <h3 class="row ml-2">
+                            Booked Date
+                        </h3>
+                        <div class="row mb-4 ml-2">
+                            @item.BookedDate
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3 class="row ms-2">
+                            Service
+                        </h3>
+                        <div class="row mb-4 ms-2">
+                            @item.Service
+                        </div>
+                        <h3 class="row ms-2">
+                            Request
+                        </h3>
+                        <div class="row mb-4 ml-2">
+                            @Html.Raw("<div class=\"ms-2\">" + @item.Request + "</div>")
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h3 class="row ml-2">
+                            Date of Appointment
+                        </h3>
+                        <div class="row mb-4 ml-2">
+                            @item.AppointedDate
+                        </div>
+                        <h3 class="row ml-2">
+                            Assigned Technician
+                        </h3>
+                        <div class="row mb-4 ml-2">
+                            @item.ProfessionalName
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
 

@@ -1,8 +1,12 @@
 ﻿@model IEnumerable<ServiceAppointmentSystem.Models.Entities.Item>
 
 @{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "Service Items";
 }
+
+<h1 class="mt-4 mb-4">Service Items</h1>
+
+<partial name="_Notification" />
 
 <div class="row pb-3">
     @foreach (var item in Model)
@@ -11,9 +15,9 @@
             <div class="row p-2">
                 <div class="col-12 p-1" style="border: 1px solid black; border-radius: 5px;">
                     <div class="container-item">
-                            <img src="@item.ImageURL" class="card-img-top rounded image"/>
+                            <img src="@item.ImageURL" style="width:300px;height:300px;" class="card-img-top rounded image"/>
                         <div class="middle">
-                            <div class="order-text">Buy Now</div>
+                            <div class="order-text ms-2">Buy Now</div>
                         </div>
                     </div>
                     <div>
@@ -21,10 +25,10 @@
                             <p class="card-title h5 text-primary">@item.Name</p>
                         </div>
                         <div class="ps-3">
-                            <p>List Price: <strike><b>$@item.ListPrice.ToString("0.00")</b></strike></p>
+                            <p>List Price: <strike><b>Rs @item.ListPrice.ToString("C2")</b></strike></p>
                         </div>
                         <div class="ps-3">
-                            <p>As Low as: <b>$@item.Price50.ToString("0.00")</b></p>
+                            <p>As Low as: <b>Rs @item.Price50.ToString("N2")</b></p>
                         </div>
                     </div>
                     <div>

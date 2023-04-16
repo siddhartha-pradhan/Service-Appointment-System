@@ -76,7 +76,7 @@ public class RegisterModel : PageModel
         [RegularExpression(@"^\d{10}$", ErrorMessage = "Enter a valid 10 digit phone number.")]
         public string PhoneNumber { get; set; }
 
-        public string Role { get; set; } = "Individual";
+        public string Role { get; set; } = Constants.User;
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -111,6 +111,8 @@ public class RegisterModel : PageModel
             user.PhoneNumber = Input.PhoneNumber;
             user.CityAddress = Input.CityAddress;
             user.RegionName = Input.RegionName;
+
+            await _userManager.AddToRoleAsync(user, Input.Role);
 
             await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
 
@@ -169,8 +171,8 @@ public class RegisterModel : PageModel
                     values: new { area = "Identity", userId = userId, code = code, returnUrl = returnUrl },
                     protocol: Request.Scheme);
 
-                await _emailSender.SendEmailAsync(Input.Email, "Confirm your email",
-                    $"Please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>.");
+                await _emailSender.SendEmailAsync(Input.Email, "Email Confirmation",
+                    $"Dear {user.FullName}, <br> <br>You have been registered to our system as an user. To continue your activation process, please confirm your account by <a href='{HtmlEncoder.Default.Encode(callbackUrl)}'>clicking here</a>. <br>Regards.");
 
                 if (_userManager.Options.SignIn.RequireConfirmedAccount)
                 {

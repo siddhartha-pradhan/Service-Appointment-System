@@ -12,7 +12,7 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         public int ServiceId { get; set; }
 
-        public int ProfessionalId { get; set; } = 0;
+        public Guid? ProfessionalId { get; set; } = null;
 
         public string Request { get; set; }
 
@@ -22,21 +22,21 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         public DateTime? FinalizedDate { get; set;}
 
-        public string AdminRemarks { get; set; }
+        public string? AdminRemarks { get; set; }
 
-        public string ProfessionalRemarks { get; set; } = "";
+        public string? ProfessionalRemarks { get; set; } = "";
 
         public string ActionStatus { get; set; } = Constants.Constants.Booked;
 
         public string PaymentStatus { get; set; } = Constants.Constants.Pending;
 
         [ForeignKey("UserId")]
-        public AppUser AppUser { get; set; }
+        public virtual AppUser? AppUser { get; set; }
 
         [ForeignKey("ProfessionalId")]
-        public Professional Professional { get; set; }
+        public virtual Professional? Professional { get; set; }
 
         [ForeignKey("ServiceId")]
-        public Service Service { get; set; }
+        public virtual Service? Service { get; set; }
     }
 }

@@ -3,12 +3,12 @@
 @using Microsoft.Extensions.Options
 
 @{
-    ViewData["Title"] = "Summary";
+    ViewData["Title"] = "Order Summary";
 }
 
 <form method="post">
-    <div class="container">
-        <div class="card">
+    <div class="container mt-5 ">
+        <div class="card mt-5 ">
             <div class="card-header bg-dark text-light ml-0">
                 <div class="row container">
                     <div class="col-6">
@@ -73,17 +73,17 @@
                             <ul class="list-group mb-3">
                                 @foreach (var item in Model.CartList)
                                 {
-                                        <li class="list-group-item d-flex justify-content-between">
-                                            <div>
-                                                <h6 class="my-1">@item.Item.Name</h6>
-                                                <small class="text-muted">Quantity: @item.Count</small>
-                                            </div>
-                                            <span class="text-muted">@((@item.Count * @item.Price).ToString("c"))</span>
-                                        </li>
+                                    <li class="list-group-item d-flex justify-content-between">
+                                        <div>
+                                            <h6 class="my-1">@item.Item.Name</h6>
+                                            <small class="text-muted">Quantity: @item.Count</small>
+                                        </div>
+                                        <span class="text-muted">Rs @((@item.Count * @item.Price).ToString())</span>
+                                    </li>
                                 }
                                 <li class="list-group-item d-flex justify-content-between">
-                                    <small class="text-muted">Total: (USD)</small>
-                                    <strong class="text-muted">@Model.Order.OrderTotal.ToString("c")</strong>
+                                    <small class="text-muted">Total: (Rs)</small>
+                                    <strong class="text-muted">Rs @Model.Order.OrderTotal.ToString()</strong>
                                 </li>
                             </ul>
                         </div>

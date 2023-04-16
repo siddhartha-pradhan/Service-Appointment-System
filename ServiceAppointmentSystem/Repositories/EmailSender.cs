@@ -13,9 +13,9 @@ namespace ServiceAppointmentSystem.Repositories
 
         public async Task SendEmailAsync(string email, string subject, string htmlMessage)
         {
-            string fromMail = "sarthakprd@gmail.com";
+            string fromMail = "siddhartha.pradhan.ix@gmail.com";
 
-            string fromPassword = "oubkgulkqilquhwr";
+            string fromPassword = "pdmbzacgnxdifhya";
 
             MailMessage message = new MailMessage();
             message.From = new MailAddress(fromMail);

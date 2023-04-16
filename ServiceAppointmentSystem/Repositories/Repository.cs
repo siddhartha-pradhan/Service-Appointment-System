@@ -71,6 +71,11 @@ namespace ServiceAppointmentSystem.Repositories
             return _dbSet.Find(Id);
         }
 
+        public T GetById(Guid? Id)
+        {
+            return _dbSet.Find(Id);
+        }
+
         public void Remove(T entity)
         {
             _dbSet.Remove(entity);

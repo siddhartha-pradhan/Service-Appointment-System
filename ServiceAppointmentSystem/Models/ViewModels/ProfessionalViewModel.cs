@@ -4,7 +4,7 @@ public class ProfessionalViewModel
 {
     public string UserId { get; set; }
 
-    public int ProfessionalId { get; set; }
+    public Guid ProfessionalId { get; set; }
 
     public string FullName { get; set; }
 

@@ -1,0 +1,84 @@
+﻿@using ServiceAppointmentSystem.Models.ViewModels;
+
+@model AppointmentDetailViewModel
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<h1 class="mt-4">Booking Details</h1>
+
+<form method="post">
+    <div class="container-fluid">
+        <div class="row" >
+            <div class="card" style="width: 95%">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col">
+                            <div class="row mb-2">
+                                <img id="profilePicture" style="width:350px;height:400px; object-fit:cover; margin:auto" src="data:image/*;base64,@(Convert.ToBase64String(Model.UserProfile))">
+                            </div>
+                            <div class="row justify-content-center">
+                                <p class="text-center h4 text-dark">@Model.UserName</p>
+                            </div>
+                        </div>
+                        <div class="col">
+                            <div class="form-group row">
+                                <input asp-for="UserId" class="form-control" hidden/>
+                                <input asp-for="AppointmentId" class="form-control" hidden/>
+                                <input asp-for="ServiceId" class="form-control" hidden/>
+                                <div class="col-4">
+                                    <label asp-for="BookedDate"></label>
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <input asp-for="BookedDate" class="form-control" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                    <label asp-for="AppointedDate"></label>
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <input asp-for="AppointedDate" class="form-control" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                    <label asp-for="Request"></label>
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <input asp-for="Request" class="form-control" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                    <label asp-for="Service"></label>
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <input asp-for="Service" class="form-control" disabled/>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                    <label asp-for="Professionals"></label>
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <select asp-for="ProfessionalId" asp-items="@Model.Professionals" class="form-control">
+                                        <option disabled selected>Select a Professional</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="col-4">
+                                </div>
+                                <div class="col-8 mb-4">
+                                    <button type="submit" class="btn btn-dark form-control">Finalize Diagnosis</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

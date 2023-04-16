@@ -1,0 +1,77 @@
+﻿@model List<ServiceAppointmentSystem.Models.ViewModels.AppointmentViewModel>
+
+@{
+	ViewData["Title"] = "Booking Details";
+}
+
+<h1 class="mt-4">Appointment Booking</h1>
+
+<partial name="_Notification" />
+
+<div class="container-fluid">
+	@foreach (var item in Model)
+	{
+		<div class="row mt-4">
+			<div class="card" style="width: 95%">
+				<div class="card-body">
+					<div class="row mt-4">
+						<div class="col-3">
+							<div class="row mb-2">
+								<img id="profilePicture" style="width:250px;height:300px; object-fit:cover; margin:auto" src="data:image/*;base64,@(Convert.ToBase64String(item.UserProfile))">
+							</div>
+							<div class="row justify-content-center">
+								<p class="text-center h5 text-dark">@item.UserName</p>
+							</div>
+						</div>
+						<div class="col-9 mt-5">
+							<div class="row">
+								<div class="col">
+									<h3 class="row ms-1">
+										Required Service
+									</h3>
+									<div class="row mb-4 ms-1">
+										@item.Service
+									</div>
+									<h3 class="row ms-1">
+										Request
+									</h3>
+									<div class="row mb-4">
+										@Html.Raw("<div class=\"ms-1\">" + @item.Request + "</div>")
+									</div>
+								</div>
+								<div class="col">
+									<h3 class="row ml-3">
+										Booked Date
+									</h3>
+									<div class="row mb-4 ml-3">
+										@item.BookedDate
+									</div>
+									<h3 class="row ml-3">
+										Appointed Date
+									</h3>
+									<div class="row mb-4 ml-3">
+										@item.AppointedDate
+									</div>
+								</div>
+								<div class="col">
+									<h3 class="row ml-3">
+										Finalized Date
+									</h3>
+									<div class="row mb-4 ml-3">
+										@item.FinalizedDate
+									</div>
+									<h3 class="row ml-3">
+										Assigned Technician
+									</h3>
+									<div class="row mb-4 ml-3">
+										@item.ProfessionalName
+									</div>
+								</div>
+							</div>	
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>

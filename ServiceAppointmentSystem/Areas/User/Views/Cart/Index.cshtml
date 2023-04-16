@@ -4,8 +4,8 @@
     ViewData["Title"] = "Index";
 }
 
-<form method="post">
-    <div class="container">
+<form method="post" class="mt-2">
+    <div class="container mt-5">
         <div class="card">
             <div class="card-header bg-dark text-light ml-0">
                 <div class="row">
@@ -14,7 +14,7 @@
                         Shopping Cart
                     </div>
                     <div class="col-6 text-end">
-                        <a asp-area="Template" asp-controller="Home" asp-action="Index" class="btn btn-outline-info btn-sm">Continue Shopping</a>
+                        <a asp-area="User" asp-controller="Home" asp-action="Index" class="btn btn-outline-info btn-sm">Continue Shopping</a>
                     </div>
                 </div>
             </div> 
@@ -31,7 +31,7 @@
                         </div>
                         <div class="col-12 col-lg-5 text-center row">
                             <div class="col-4 text-md-end mt-4 pt-4">
-                                <h6><strong>@item.Price.ToString("c")
+                                <h6><strong>Rs @item.Price.ToString()
                                         <span class="text-muted">&nbsp;x&nbsp;</span>@item.Count
                                     </strong>
                                 </h6>
@@ -59,8 +59,8 @@
                     <div class="col-12 col-md-6 offset-md-6 col-lg-4 offset-lg-8 pr-4">
                         <ul class="list-group">
                             <li class="list-group-item d-flex justify-content-between bg-light">
-                                <span class="text-info">Total USD</span>
-                                <strong class="text-info">@Model.Order.OrderTotal.ToString("c")</strong>
+                                <span class="text-info">Total Amount</span>
+                                <strong class="text-info">Rs @Model.Order.OrderTotal.ToString("N2")</strong>
                             </li>
                         </ul>
                     </div> 

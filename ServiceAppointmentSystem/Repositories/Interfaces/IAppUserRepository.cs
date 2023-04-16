@@ -4,6 +4,6 @@ namespace ServiceAppointmentSystem.Repositories.Interfaces
 {
     public interface IAppUserRepository : IRepository<AppUser>
     {
-        AppUser GetById(string id);
+        AppUser GetById(string? id);
     }
 }

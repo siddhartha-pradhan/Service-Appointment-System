@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceAppointmentSystem.Models.Constants;
@@ -15,15 +16,23 @@ namespace ServiceAppointmentSystem.Areas.User.Controllers;
 public class AppointmentController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IEmailSender _emailSender;
 
-    public AppointmentController(IUnitOfWork unitOfWork)
+    public AppointmentController(IUnitOfWork unitOfWork, IEmailSender emailSender)
     {
         _unitOfWork = unitOfWork;
+        _emailSender = emailSender;
     }
 
     public IActionResult Index()
     {
-        var result = _unitOfWork.Appointment.GetAll().Where(x => x.ActionStatus == Constants.Completed).ToList()
+        var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+        var user = _unitOfWork.AppUser.GetById(claim.Value);
+
+        var result = _unitOfWork.Appointment.GetAll().Where(x => x.ActionStatus == Constants.Completed && x.UserId == user.Id).ToList()
                      .Select(x => new AppointmentViewModel()
                      {
                          AppointmentId = x.Id,
@@ -33,8 +42,8 @@ public class AppointmentController : Controller
                          AppointedDate = x.AppointmentDate.ToString("dddd, dd MMMM yyyy"),
                          FinalizedDate = x.FinalizedDate?.ToString("dddd, dd MMMM yyyy"),
                          ProfessionalId = x.ProfessionalId ,
-                         ProfessionalName = _unitOfWork.AppUser.GetById(_unitOfWork.Professional.Get(x.ProfessionalId).UserId).FullName,
-                         Professionalism = _unitOfWork.Service.Get(_unitOfWork.Professional.Get(x.ProfessionalId).ServiceId).Role,
+                         ProfessionalName = _unitOfWork.AppUser.GetById(_unitOfWork.Professional.GetById(x.ProfessionalId).UserId).FullName,
+                         Professionalism = _unitOfWork.Service.Get(_unitOfWork.Professional.GetById(x.ProfessionalId).ServiceId).Role,
                          Request = x.Request,
                          ActionStatus = x.ActionStatus,
                          ProfessionalRemarks = x.ProfessionalRemarks,
@@ -43,9 +52,43 @@ public class AppointmentController : Controller
         return View(result);
     }
 
+    private string AppUser(Guid? Id)
+    {
+        var professional = _unitOfWork.Professional.GetById(Id);
+
+        if (professional == null)
+        {
+            return "No professionals assigned yet.";
+        }
+
+        var result = _unitOfWork.AppUser.GetById(professional.UserId);
+
+        return result.FullName;
+    }
+
+    private string Service(Guid? Id)
+    {
+        var professional = _unitOfWork.Professional.GetById(Id);
+
+        if (professional == null)
+        {
+            return "No professionals assigned yet.";
+        }
+
+        var result = _unitOfWork.Service.Get(professional.ServiceId);
+        
+        return result.Name;
+    }
+
     public IActionResult Booked()
     {
-        var result = _unitOfWork.Appointment.GetAll().Where(x => x.ActionStatus == Constants.Booked).ToList()
+        var claimsIdentity = (ClaimsIdentity)User.Identity;
+
+        var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+
+        var user = _unitOfWork.AppUser.GetById(claim.Value);
+
+        var result = _unitOfWork.Appointment.GetAll().Where(x => x.ActionStatus == Constants.Booked && x.UserId == user.Id).ToList()
                      .Select(x => new AppointmentViewModel()
                      {
                          AppointmentId = x.Id,
@@ -55,8 +98,8 @@ public class AppointmentController : Controller
                          AppointedDate = x.AppointmentDate.ToString("dddd, dd MMMM yyyy"),
                          FinalizedDate = x.FinalizedDate?.ToString("dddd, dd MMMM yyyy"),
 						 ProfessionalId = x.ProfessionalId,
-                         ProfessionalName = _unitOfWork.AppUser.GetById(_unitOfWork.Professional.Get(x.ProfessionalId).UserId).FullName,
-                         Professionalism = _unitOfWork.Service.Get(_unitOfWork.Professional.Get(x.ProfessionalId).ServiceId).Role,
+                         ProfessionalName = AppUser(x.ProfessionalId),
+                         Professionalism = Service(x.ProfessionalId),
                          Request = x.Request,
                          ActionStatus = x.ActionStatus,
                          ProfessionalRemarks = x.ProfessionalRemarks,
@@ -83,6 +126,12 @@ public class AppointmentController : Controller
 
         var claim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
 
+        var user = _unitOfWork.AppUser.GetById(claim.Value);
+
+        var service = _unitOfWork.Service.Get(appointment.ServiceId);
+
+        var appointedDate = DateTime.ParseExact(appointment.AppointedDate, "yyyy-MM-dd'T'HH:mm", System.Globalization.CultureInfo.InvariantCulture);
+
         var result = new Appointment()
         {
             UserId = claim.Value,
@@ -90,9 +139,15 @@ public class AppointmentController : Controller
             BookedDate = DateTime.Now,
             ServiceId = appointment.ServiceId,
             ActionStatus = Constants.Booked,
+            AppointmentDate = appointedDate,
         };
 
         _unitOfWork.Appointment.Add(result);
+
+        _unitOfWork.Save();
+
+        _emailSender.SendEmailAsync(user.Email, "Appointment Booking", 
+            $"Dear {user.FullName}, <br><br>A new appointment for your request on {service.Name} has been booked. <br>Please wait a while till the admin assigns a technician for the process. <br><br>Regards.");
 
         TempData["Success"] = "Appointment Booked Successfully";
 
