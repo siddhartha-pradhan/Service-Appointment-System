@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using ServiceAppointmentSystem.Models.Constants;
 using ServiceAppointmentSystem.Models.Entities;
@@ -10,6 +11,7 @@ using System.Security.Claims;
 namespace ServiceAppointmentSystem.Areas.User.Controllers;
 
 [Area("User")]
+[Authorize(Roles = Constants.User)]
 public class AppointmentController : Controller
 {
     private readonly IUnitOfWork _unitOfWork;

@@ -11,6 +11,7 @@ using ServiceAppointmentSystem.Models.Constants;
 namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 {
 	[Area("Admin")]
+    [Authorize(Roles = Constants.Admin)]
 	public class OrderController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

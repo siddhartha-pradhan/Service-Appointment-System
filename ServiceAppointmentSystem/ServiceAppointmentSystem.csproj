@@ -23,6 +23,7 @@
     <Folder Include="wwwroot\images\items\" />
     <Folder Include="wwwroot\images\resumes\" />
     <Folder Include="wwwroot\images\users\" />
+    <Folder Include="wwwroot\assets\" />
   </ItemGroup>
 
   <ItemGroup>

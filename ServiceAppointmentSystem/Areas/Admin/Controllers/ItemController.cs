@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Hosting;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using ServiceAppointmentSystem.Models.Constants;
 using ServiceAppointmentSystem.Models.Entities;
 using ServiceAppointmentSystem.Models.ViewModels;
 using ServiceAppointmentSystem.Repositories.Interfaces;
@@ -8,6 +10,7 @@ using ServiceAppointmentSystem.Repositories.Interfaces;
 namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constants.Admin)]
 	public class ItemController : Controller
 	{
 		private readonly IUnitOfWork _unitOfWork;

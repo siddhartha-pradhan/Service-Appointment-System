@@ -31,7 +31,9 @@ public class ApplicationDbContext : IdentityDbContext
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.Entity<IdentityUser>().ToTable("Users");
+		base.OnModelCreating(builder);
+
+		builder.Entity<IdentityUser>().ToTable("Users");
         builder.Entity<IdentityRole>().ToTable("Roles");
         builder.Entity<IdentityUserToken<string>>().ToTable("Tokens");
         builder.Entity<IdentityUserRole<string>>().ToTable("UserRoles");
@@ -45,6 +47,5 @@ public class ApplicationDbContext : IdentityDbContext
             .HasForeignKey(p => p.UserId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        base.OnModelCreating(builder);
     }
 }

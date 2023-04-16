@@ -1,11 +1,14 @@
-﻿using Microsoft.AspNetCore.Identity.UI.Services;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using ServiceAppointmentSystem.Models.Constants;
 using ServiceAppointmentSystem.Models.ViewModels;
 using ServiceAppointmentSystem.Repositories.Interfaces;
 
 namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 {
     [Area("Admin")]
+    [Authorize(Roles = Constants.Admin)]
     public class ProfessionalController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
