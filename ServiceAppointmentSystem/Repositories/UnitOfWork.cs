@@ -17,12 +17,14 @@ namespace ServiceAppointmentSystem.Repositories
             Professional = new ProfessionalRepository(_dbContext);
             Service = new ServiceRepository(_dbContext);
 			ShoppingCart = new ShoppingCartRepository(_dbContext);
-
-		}
+            Appointment = new AppointmentRepository(_dbContext);
+        }
 
         public IAppUserRepository AppUser { get; set; }
 
-		public IItemRepository Item { get; set; }
+        public IAppointmentRepository Appointment { get; set; }
+
+        public IItemRepository Item { get; set; }
 
 		public IOrderDetailRepository OrderDetail { get; set; }
         

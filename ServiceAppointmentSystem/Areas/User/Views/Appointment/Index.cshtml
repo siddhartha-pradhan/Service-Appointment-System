@@ -1,0 +1,52 @@
+﻿@model List<ServiceAppointmentSystem.Models.ViewModels.AppointmentViewModel>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="mb-4">Appointment Index</h1>
+
+<div class="row mb-3">
+    <div class="col-6">
+        <h2 class="text-primary">Appointment History</h2>
+    </div>
+    <div class="col-6 text-end">
+        <a class="btn btn-primary" asp-action="Start"><i class="fa-solid fa-plus"></i> &nbsp; Book a new appointment</a>
+    </div>
+</div>
+
+<div class="container-fluid">
+	@foreach(var item in Model)
+	{
+		<div class="card">
+			<div class="card-body">
+				<div class="row">
+					<div class="col-auto">
+						<h3 class="row ml-3">
+							Appointment Request
+						</h3>
+						<div class="row mb-4 ml-3">
+							@Html.Raw(item.Request)
+						</div>
+					</div>
+					<div class="col-auto ml-3">
+						<h3 class="row ml-3">
+							Booked Date
+						</h3>
+						<div class="row mb-4 ml-3">
+							@item.BookedDate
+						</div>
+					</div>
+					<div class="col-auto ml-3">
+						<h3 class="row ml-3">
+							Appointed Date
+						</h3>
+						<div class="row mb-4 ml-3">
+							@item.FinalizedDate
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	}
+</div>

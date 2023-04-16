@@ -4,6 +4,8 @@
     {
         IAppUserRepository AppUser { get; set; }
 
+        IAppointmentRepository Appointment { get; set; }
+
         IItemRepository Item { get; set; }
 
         IOrderDetailRepository OrderDetail { get; set; }

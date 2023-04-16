@@ -2,8 +2,7 @@
 
 namespace ServiceAppointmentSystem.Repositories.Interfaces
 {
-    public interface IAppUserRepository : IRepository<AppUser>
+    public interface IAppointmentRepository : IRepository<Appointment>
     {
-        AppUser GetById(string id);
     }
 }

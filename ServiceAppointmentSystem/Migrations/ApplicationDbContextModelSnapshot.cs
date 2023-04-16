@@ -46,7 +46,7 @@ namespace ServiceAppointmentSystem.Migrations
                         .HasDatabaseName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.ToTable("Roles", (string)null);
+                    b.ToTable("AspNetRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -71,7 +71,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RoleClaims", (string)null);
+                    b.ToTable("AspNetRoleClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
@@ -140,7 +140,7 @@ namespace ServiceAppointmentSystem.Migrations
                         .HasDatabaseName("UserNameIndex")
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("AspNetUsers", (string)null);
 
                     b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
@@ -167,7 +167,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserClaims", (string)null);
+                    b.ToTable("AspNetUserClaims", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
@@ -189,7 +189,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("LoginAttempts", (string)null);
+                    b.ToTable("AspNetUserLogins", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
@@ -204,7 +204,7 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("UserRoles", (string)null);
+                    b.ToTable("AspNetUserRoles", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
@@ -223,7 +223,62 @@ namespace ServiceAppointmentSystem.Migrations
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
-                    b.ToTable("Tokens", (string)null);
+                    b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("ActionStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("AdminRemarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime?>("AppointedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("BookedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ProfessionalId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProfessionalRemarks")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Request")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("ServiceId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProfessionalId");
+
+                    b.HasIndex("ServiceId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Appointments");
                 });
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Item", b =>
@@ -267,7 +322,36 @@ namespace ServiceAppointmentSystem.Migrations
                     b.ToTable("Items");
                 });
 
-            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Order", b =>
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderDetail", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ItemId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("OrderId")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ItemId");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderDetails");
+                });
+
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderHeader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -333,35 +417,6 @@ namespace ServiceAppointmentSystem.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderDetail", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("Count")
-                        .HasColumnType("int");
-
-                    b.Property<int>("ItemId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("OrderId")
-                        .HasColumnType("int");
-
-                    b.Property<double>("Price")
-                        .HasColumnType("float");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ItemId");
-
-                    b.HasIndex("OrderId");
-
-                    b.ToTable("OrderDetails");
                 });
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Professional", b =>
@@ -435,6 +490,9 @@ namespace ServiceAppointmentSystem.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("Count")
+                        .HasColumnType("int");
 
                     b.Property<int>("ItemId")
                         .HasColumnType("int");
@@ -526,6 +584,33 @@ namespace ServiceAppointmentSystem.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Appointment", b =>
+                {
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Professional", "Professional")
+                        .WithMany()
+                        .HasForeignKey("ProfessionalId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Service", "Service")
+                        .WithMany()
+                        .HasForeignKey("ServiceId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.AppUser", "AppUser")
+                        .WithMany("Appointments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
+
+                    b.Navigation("Professional");
+
+                    b.Navigation("Service");
+                });
+
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Item", b =>
                 {
                     b.HasOne("ServiceAppointmentSystem.Models.Entities.Service", "Service")
@@ -537,17 +622,6 @@ namespace ServiceAppointmentSystem.Migrations
                     b.Navigation("Service");
                 });
 
-            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Order", b =>
-                {
-                    b.HasOne("ServiceAppointmentSystem.Models.Entities.AppUser", "AppUser")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("AppUser");
-                });
-
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderDetail", b =>
                 {
                     b.HasOne("ServiceAppointmentSystem.Models.Entities.Item", "Item")
@@ -556,7 +630,7 @@ namespace ServiceAppointmentSystem.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("ServiceAppointmentSystem.Models.Entities.Order", "Order")
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.OrderHeader", "Order")
                         .WithMany()
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -565,6 +639,17 @@ namespace ServiceAppointmentSystem.Migrations
                     b.Navigation("Item");
 
                     b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.OrderHeader", b =>
+                {
+                    b.HasOne("ServiceAppointmentSystem.Models.Entities.AppUser", "AppUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AppUser");
                 });
 
             modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.Professional", b =>
@@ -595,6 +680,11 @@ namespace ServiceAppointmentSystem.Migrations
                     b.Navigation("AppUser");
 
                     b.Navigation("Item");
+                });
+
+            modelBuilder.Entity("ServiceAppointmentSystem.Models.Entities.AppUser", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

@@ -16,5 +16,7 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         [Display(Name = "Region")]
         public string RegionName { get; set; }
+
+        public ICollection<Appointment>? Appointments { get; set; }
     }
 }

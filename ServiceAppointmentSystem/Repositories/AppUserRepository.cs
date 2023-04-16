@@ -12,5 +12,12 @@ namespace ServiceAppointmentSystem.Repositories
         {
             _dbContext = dbContext;
         }
+
+        public AppUser GetById(string id)
+        {
+            var user = _dbContext.AppUsers.FirstOrDefault(x => x.Id == id);
+            
+            return user;
+        }
     }
 }

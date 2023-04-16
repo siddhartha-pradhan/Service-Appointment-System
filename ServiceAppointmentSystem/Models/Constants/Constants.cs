@@ -19,5 +19,11 @@
 		public const string PaymentApproved = "Approved";
         public const string PaymentDelayed = "Delayed";
         public const string PaymentRejected = "Rejected";
+
+        public const string Booked = "Booked";
+        public const string Completed = "Completed";
+
+        public const string Pending = "Pending";
+        public const string Approved = "Approved";
     }
 }

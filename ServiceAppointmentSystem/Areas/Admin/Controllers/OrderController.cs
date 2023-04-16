@@ -31,7 +31,7 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 			OrderViewModel orderViewModel = new OrderViewModel()
 			{
 				Order = _unitOfWork.Order.GetFirstOrDefault(u => u.Id == ID, includeProperties: "AppUser"),
-				OrderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderId == ID, includeProperties: "Book")
+				OrderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderId == ID, includeProperties: "Item")
 			};
 			return View(orderViewModel);
 		}
@@ -167,7 +167,7 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 		{
 			orderViewModel.Order = _unitOfWork.Order.GetFirstOrDefault(u => u.Id == orderViewModel.Order.Id, "AppUser");
 
-			orderViewModel.OrderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderId == orderViewModel.Order.Id, null, "Book");
+			orderViewModel.OrderDetails = _unitOfWork.OrderDetail.GetAll(u => u.OrderId == orderViewModel.Order.Id, null, "Item");
 
 			var domain = "https://localhost:44389/";
 
