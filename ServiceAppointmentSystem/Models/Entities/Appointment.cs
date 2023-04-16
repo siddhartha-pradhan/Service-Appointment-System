@@ -18,7 +18,9 @@ namespace ServiceAppointmentSystem.Models.Entities
 
         public DateTime BookedDate { get; set; } = DateTime.Now;
 
-        public DateTime? AppointedDate { get; set;}
+        public DateTime AppointmentDate { get; set; }
+
+        public DateTime? FinalizedDate { get; set;}
 
         public string AdminRemarks { get; set; }
 

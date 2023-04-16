@@ -2,3 +2,7 @@
 .vs/
 **/obj
 **/bin
+*.jpg
+*.jpeg
+*.gif
+*.pdf

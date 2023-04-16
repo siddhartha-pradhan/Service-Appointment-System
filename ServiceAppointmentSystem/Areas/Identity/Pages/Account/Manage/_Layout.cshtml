@@ -1,27 +1,23 @@
 ﻿@{
-    if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
-    {
-        Layout = parentLayout.ToString();
-    }
-    else
-    {
-        Layout = "/Areas/Identity/Pages/_Layout.cshtml";
-    }
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Manage your account</h1>
+<h1 class="text-center mt-4">Manage your account</h1>
 
 <div>
-    <h2>Change your account settings</h2>
+    <h2 class="text-center mb-2">Change your account settings</h2>
     <hr />
-    <div class="row">
-        <div class="col-md-3">
-            <partial name="_ManageNav" />
-        </div>
-        <div class="col-md-9">
-            @RenderBody()
+    <div class="container-fluid">
+        <div class="row mt-2">
+            <div class="col-md-3 ml-4">
+                <partial name="_ManageNav" />
+            </div>
+            <div class="col-md-8">
+                @RenderBody()
+            </div>
         </div>
     </div>
+
 </div>
 
 @section Scripts {

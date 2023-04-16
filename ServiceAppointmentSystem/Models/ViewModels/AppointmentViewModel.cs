@@ -23,6 +23,9 @@ namespace ServiceAppointmentSystem.Models.ViewModels
 
         public string BookedDate { get; set; }
 
+        [Display(Name = "Appointment Date")]
+        public string AppointedDate { get; set; }
+
         public string? FinalizedDate { get; set; }
 
         public string? ProfessionalRemarks { get; set; }

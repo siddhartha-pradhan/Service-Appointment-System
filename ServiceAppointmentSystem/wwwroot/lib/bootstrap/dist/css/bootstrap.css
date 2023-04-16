@@ -5604,8 +5604,13 @@ textarea.form-control-lg {
   word-wrap: break-word;
   opacity: 0;
 }
+
+.dataTables_filter {
+    margin-bottom: 4rem
+}
+
 .tooltip.show {
-  opacity: var(--bs-tooltip-opacity);
+    opacity: var(--bs-tooltip-opacity);
 }
 .tooltip .tooltip-arrow {
   display: block;

@@ -22,14 +22,64 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            var users = _unitOfWork.AppUser.GetAll().Where(x => x.EmailConfirmed).ToList();
+            var professionals = _unitOfWork.Professional.GetAll().Where(x => x.IsApproved).ToList();
+            var services = _unitOfWork.Service.GetAll();
+
+            var result = (from user in users
+                          join professional in professionals
+                          on user.Id equals professional.UserId
+                          join service in services
+                          on professional.ServiceId equals service.Id
+                          select new ProfessionalViewModel
+                          {
+                              UserId = user.Id,
+                              ProfessionalId = professional.Id,
+                              FullName = user.FullName,
+                              PhoneNumber = user.PhoneNumber,
+                              EmailAddress = user.Email,
+                              ProfileImage = user.ProfileImage,
+                              Specialist = service.Role,
+                              Certification = professional.Certification,
+                              Resume = professional.Resume
+                          }).ToList();
+
+            return View(result);
+        }
+
+        public IActionResult Details(string id)
+        {
+            var users = _unitOfWork.AppUser.GetAll().Where(x => x.Id == id).ToList();
+            var professionals = _unitOfWork.Professional.GetAll().ToList();
+            var services = _unitOfWork.Service.GetAll();
+
+
+            var result = (from user in users
+                          join professional in professionals
+                          on user.Id equals professional.UserId
+                          join service in services
+                          on professional.ServiceId equals service.Id
+                          select new ProfessionalViewModel
+                          {
+                              UserId = user.Id,
+                              ProfessionalId = professional.Id,
+                              FullName = user.FullName,
+                              PhoneNumber = user.PhoneNumber,
+                              EmailAddress = user.Email,
+                              ProfileImage = user.ProfileImage,
+                              Specialist = service.Role,
+                              Certification = professional.Certification,
+                              Resume = professional.Resume
+                          }).FirstOrDefault();
+
+            return View(result);
         }
 
         public IActionResult Professionals()
         {
             var users = _unitOfWork.AppUser.GetAll().Where(x => !x.EmailConfirmed).ToList();
-            var services = _unitOfWork.Service.GetAll();
             var professionals = _unitOfWork.Professional.GetAll();
+            var services = _unitOfWork.Service.GetAll();
 
             var result = (from user in users
                           join professional in professionals

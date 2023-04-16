@@ -84,7 +84,7 @@ namespace ServiceAppointmentSystem.Areas.Admin.Controllers
 
                 if (imageFile != null)
                 {
-                    string fileName = Guid.NewGuid().ToString();
+                    string fileName = Guid.NewGuid().ToString() + $" {itemViewModel.Item.Name}";
                     var uploads = Path.Combine(wwwRootPath, @"images\items");
                     var extension = Path.GetExtension(imageFile.FileName);
 

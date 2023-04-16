@@ -4,7 +4,7 @@
     ViewData["Title"] = "Professionals Approval";
 }
 
-<h1 class="mt-4">Approval for Professional Registrations</h1>
+<h1 class="mt-4 mb-3">Approval for Professional Registrations</h1>
 
 <partial name="_Notification" />
 
@@ -13,31 +13,48 @@
     <form method="post">
         <input asp-for="@item.UserId" class="form-control" type="hidden" />
         <input asp-for="@item.ProfessionalId" class="form-control" type="hidden" />
-        <div class="card">
+        <div class="card mb-4">
             <div class="card-body">
                 <div class="row">
                     <div class="col-auto">
                         <img id="profilePicture" style="width:285px;height:250px; object-fit:cover" src="data:image/*;base64,@(Convert.ToBase64String(@item.ProfileImage))">
                     </div>
-                    <div class="col">
-                        <div class="row">
-                            Name: @item.FullName
+                    <div class="col-4 ms-4">
+                        <h3 class="row ms-2">
+                            Professional Name
+                        </h3>
+                        <div class="row mb-4 ms-2">
+                            @item.FullName
                         </div>
-                        <div class="row">
-                            Email: @item.EmailAddress
+                        <h3 class="row ms-2">
+                            Email Address
+                        </h3>
+                        <div class="row mb-4 ms-2">
+                            @item.EmailAddress
                         </div>
-                        <div class="row">
-                            PhoneNumber: @item.PhoneNumber
+                        <h3 class="row ms-2">
+                            Speciality
+                        </h3>
+                        <div class="row ms-2">
+                            @item.Specialist
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="row">
-                            <a class="btn btn-outline-primary mb-2" href="@item.Resume" target="_blank">Resume</a>
+                    <div class="col-4">
+                        <h3 class="row ms-2">
+                            Phone Number
+                        </h3>
+                        <div class="row mb-4 ms-2">
+                            @item.PhoneNumber
                         </div>
-                        <div class="row">
-                            <a class="btn btn-outline-primary mb-2" href="@item.Certification" target="_blank">Certification</a>
+                        <div class="row mb-2">
+                            <div class="col-5">
+                                <a class="btn btn-outline-primary ms-2 mb-2 w-100" href="@item.Certification" target="_blank">Certification</a>
+                            </div>
+                            <div class="col-4">
+                                <a class="btn btn-outline-primary ms-3 mb-2 w-100" href="@item.Resume" target="_blank">Resume</a>
+                            </div>
                         </div>
-                        <div class="row">
+                        <div class="row w-75 ms-2">
                             <button class="btn btn-dark mb-2" asp-route-id="@item.UserId" asp-route-staffId="@item.ProfessionalId">Approve</button>
                         </div>
                     </div>
